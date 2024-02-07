@@ -4,12 +4,16 @@ start
 
    : Admin provides BookIdNo;
 
-if (bookId present) then (yes)
-    :set new info Title/Author/PublishYear;
-    end;
+if (bookId present) then (yes book present)
+    if (book info is null) then (yes)
+      : throw exception book info can not be null;
+      end;
+     else (no not null)
 
-else (No)
-
+      :set new info Title/Author/PublishYear;
+      end;
+      endif
+else(no book not present)
     : error Message book not found;
     end;
 

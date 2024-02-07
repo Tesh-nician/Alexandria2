@@ -1,10 +1,9 @@
 package be.intecbrussel.service;
 
 import be.intecbrussel.model.book.Book;
-import be.intecbrussel.model.book.FindType;
+import be.intecbrussel.model.book.FindAndSortKeys;
 import be.intecbrussel.repository.BookRepository;
 
-import java.net.IDN;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,7 +52,7 @@ public class BookService {
 
 
     // method to control type of finding book
-    public void findTypeControl(FindType findType) {
+    public void findTypeControl(FindAndSortKeys findType) {
         switch (findType) {
             case ID: {
                 System.out.println("Enter Book ID");
@@ -130,6 +129,73 @@ public class BookService {
 
     }
 
+    //Method to control sorting Type
+    public void sortTypeControl(FindAndSortKeys sortKey)
+    {
+        switch (sortKey) {
+            case AUTHOR:
+            {
+                List<Book> sortedList = sortBookByBookAuthor();
+                sortedList.forEach(System.out::println);
+                break;
+            }
+            case PUBLISHING_YEAR:
+            {
+                List<Book> sortedList = sortBookByPublishingYear();
+                sortedList.forEach(System.out::println);
+                break;
+            }
+        }
+    }
+    public List<Book> sortBookByBookAuthor()
+    {
+        List<Book> bookList = bookRepository.getBookList();
+        return (bookList.stream().sorted(Comparator.comparing(Book::getBookAuthor)).collect(Collectors.toList()));
+    }
+
+    public List<Book> sortBookByPublishingYear()
+    {
+        List<Book> bookList = bookRepository.getBookList();
+        return (bookList.stream().sorted(Comparator.comparing(Book::getBookPublishYear)).collect(Collectors.toList()));
+    }
+
+   public void updateBookInfo(int bookId) throws Exception
+   {
+
+       List<Book> bookList = bookRepository.getBookList();
+       Optional<Book> bookInfo = bookList.stream().filter(book-> book.getBookIDNO().equals(bookId)).findFirst();
+       if(bookInfo.isPresent())
+       {
+           String bookTitle = "The Lightning Thief";
+           String bookAuthor = " Rick Riordan";
+           int publishingYear = 2006;
+           updateBook(bookId,bookTitle,bookAuthor,publishingYear);
+       }
+       else
+       {
+           System.out.println("Book not present");
+       }
+   }
+   public void updateBook(int bookId, String bookTitle,String bookAuthor,int publishingYear) throws Exception {
+
+           List<Book> bookList = bookRepository.getBookList();
+           Book updateBookRecord = bookList.stream().filter(book -> book.getBookIDNO().equals(bookId)).findFirst().get();
+           if (bookTitle != null && bookAuthor != null && publishingYear > 0) {
+               updateBookRecord.setBookTitle(bookTitle);
+               updateBookRecord.setBookPublishYear(publishingYear);
+               updateBookRecord.setBookAuthor(bookAuthor);
+           } else {
+               throw new Exception();
+           }
+   }
+   public int countBooks()
+       {
+           List<Book> bookList = bookRepository.getBookList();
+           return(bookList.size()) ;
+       }
+
+
+   }
 }
 
 

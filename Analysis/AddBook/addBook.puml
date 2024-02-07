@@ -2,39 +2,22 @@
 
 start
    : Admin Provides Add Method;
-if (book is fiction) then (yes)
-    :set bookIdNo;
-    :add book;
+if (book or book info is null) then (yes)
+    :error message book info can not be null;
     end;
-
-elseif (book is non fiction) then (yes)
-    :set bookIdNo;
-    :add book;
+else (no)
+    : set book Id no;
+    : add book in the list;
     end;
-
-elseif(book is children) then (yes)
-    :set bookIdNo;
-    :add book;
-    end;
-
-else (no  Others )
-    :set bookIdNo;
-    :add book;
-    end;
-endif
-
-
 @enduml
 
+
+
 @startuml
-
-
-
-
 Admin --> bookApp : input book info
 
 
-BookApp --> BookService : addAnimal(Animal n,newAnimal)
+BookApp --> BookService : addBook(Animal n,newAnimal)
 AnimalService --> AnimalRepository : getAnimal()
 AnimalService <-- AnimalRepository : List<Animal>
 

@@ -1,6 +1,6 @@
 @startuml
 start
-   : Admin Provides Count Book Method;
-   :Coun total no of books;
+   :Admin Provides Count Book Method;
+   :Count total no of books;
    end;
 @enduml

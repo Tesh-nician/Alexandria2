@@ -2,7 +2,7 @@ package be.intecbrussel;
 
 import be.intecbrussel.model.book.Book;
 import be.intecbrussel.model.book.ChildrenBooks;
-import be.intecbrussel.model.book.FindType;
+import be.intecbrussel.model.book.FindAndSortKeys;
 import be.intecbrussel.repository.BookRepository;
 import be.intecbrussel.service.BookService;
 
@@ -16,7 +16,7 @@ public class MainLibraryApp {
         char ans = 'y';
         Scanner myScanner = new Scanner(System.in);
         BookService bookService = new BookService(new BookRepository());
-        FindType findType;
+        FindAndSortKeys findAndSortKeys;
         System.out.println("Welcome to Alexendria.");
         System.out.println("Enter your status admin/user");
         String status = myScanner.nextLine().toLowerCase();
@@ -71,7 +71,8 @@ public class MainLibraryApp {
                     break;
 
                 }
-                case 2: {
+                case 2:
+                {
                     System.out.println("How do you want to find a book Book Title/ Book Author/Book No");
                     System.out.println("Enter your choice");
                     System.out.println("1. Book Title");
@@ -80,18 +81,18 @@ public class MainLibraryApp {
                     choice = myScanner.nextInt();
                     switch (choice) {
                         case 1: {
-                            findType = FindType.TITLE;
-                            bookService.findTypeControl(findType);
+                            findAndSortKeys = FindAndSortKeys.TITLE;
+                            bookService.findTypeControl(findAndSortKeys);
                             break;
                         }
                         case 2: {
-                            findType = FindType.AUTHOR;
-                            bookService.findTypeControl(findType);
+                            findAndSortKeys = FindAndSortKeys.AUTHOR;
+                            bookService.findTypeControl(findAndSortKeys);
                             break;
                         }
                         case 3: {
-                            findType = FindType.ID;
-                            bookService.findTypeControl(findType);
+                            findAndSortKeys = FindAndSortKeys.ID;
+                            bookService.findTypeControl(findAndSortKeys);
                             break;
                         }
                         default: {
@@ -103,6 +104,56 @@ public class MainLibraryApp {
 
 
                 }
+                case 4:
+                {
+
+
+                    //Sort method
+                    System.out.println("How do you want to sort books Book Author/ Publishing year");
+                    System.out.println("Enter your choice");
+                    System.out.println("1. Book Author");
+                    System.out.println("2. Publishing Year");
+                    choice = myScanner.nextInt();
+                    switch (choice) {
+                        case 1: {
+                            findAndSortKeys = FindAndSortKeys.AUTHOR;
+                            bookService.sortTypeControl(findAndSortKeys);
+                            break;
+                        }
+                        case 2: {
+                            findAndSortKeys = FindAndSortKeys.PUBLISHING_YEAR;
+                            bookService.sortTypeControl(findAndSortKeys);
+                            break;
+                        }
+
+                        default: {
+                            System.out.println("Invalid choice");
+                            break;
+
+                        }
+                    }
+                }
+                case 5:
+                {
+                    //Update book Record
+                    System.out.println("Enter book Id to update info");
+                    int bookNo = myScanner.nextInt();
+                    try {
+                        bookService.updateBookInfo(bookNo);
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println("Book info can not be null");
+                    }
+
+                }
+                case 6:
+                {
+                    //count books method
+                  int countOfBooks =  bookService.countBooks();
+                  System.out.println("Total no of books are   "+countOfBooks);
+                }
+
 
 
             }
